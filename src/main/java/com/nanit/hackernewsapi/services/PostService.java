@@ -10,7 +10,7 @@ public class PostService {
     @Autowired
     private PostRepository repository;
 
-    public Iterable<Post> getAllPosts() {
+    public Iterable<Post> getAll() {
         return repository.findAll();
     }
 }

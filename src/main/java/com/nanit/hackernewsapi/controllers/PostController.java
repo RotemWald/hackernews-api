@@ -16,8 +16,8 @@ public class PostController {
     private PostService service;
 
     @GetMapping
-    public ResponseEntity<Iterable<Post>> getAllPosts() {
-        Iterable<Post> posts = service.getAllPosts();
+    public ResponseEntity<Iterable<Post>> getAll() {
+        Iterable<Post> posts = service.getAll();
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 }
