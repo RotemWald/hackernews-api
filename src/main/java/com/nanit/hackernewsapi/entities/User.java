@@ -11,12 +11,12 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @Setter
-public class Post {
+public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    private String content;
+    private String username;
 
-    private Integer votes;
+    private String password;
 }
