@@ -1,0 +1,15 @@
+/posts/1 HTTP GET
+{
+    "id": 1,
+    "content": "Hello World",
+    "votes": 5
+}
+
+/posts/1/votes HTTP POST
+{
+    "id": 1,
+    "content": "Hello World",
+    "votes": 6
+}
+
+UPDATE post SET votes = `votes` + 1 WHERE id = 1;

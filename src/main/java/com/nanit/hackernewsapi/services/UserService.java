@@ -6,7 +6,6 @@ import com.nanit.hackernewsapi.entities.Token;
 import com.nanit.hackernewsapi.entities.User;
 import com.nanit.hackernewsapi.exceptions.EntityNotFoundException;
 import com.nanit.hackernewsapi.exceptions.UnauthorizedException;
-import com.nanit.hackernewsapi.repositories.TokenRepository;
 import com.nanit.hackernewsapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
