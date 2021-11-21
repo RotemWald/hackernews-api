@@ -1,6 +1,7 @@
 package com.nanit.hackernewsapi.services;
 
 import com.nanit.hackernewsapi.entities.Post;
+import com.nanit.hackernewsapi.entities.Token;
 import com.nanit.hackernewsapi.exceptions.EntityNotFoundException;
 import com.nanit.hackernewsapi.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,9 @@ public class PostService {
         return repository.findAllByOrderByVotesDesc();
     }
 
-    public Post create(Post post) {
+    public Post create(Post post, Token token) {
         post.setVotes(0);
+        post.setUserId(token.getUserId());
         return repository.save(post);
     }
 

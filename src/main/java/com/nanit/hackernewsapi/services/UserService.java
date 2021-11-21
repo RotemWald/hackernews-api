@@ -20,7 +20,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private TokenRepository tokenRepository;
+    private TokenService tokenService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -35,9 +35,7 @@ public class UserService {
     public LoginResponse login(LoginRequest request) {
         User user = getByUsername(request.getUsername());
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            Token token = new Token();
-            token.setUserId(user.getId());
-            tokenRepository.save(token);
+            Token token = tokenService.create(user);
             return new LoginResponse(token.getToken());
         } else {
             throw new UnauthorizedException("bad credentials");

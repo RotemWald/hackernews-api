@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Setter
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private String username;
