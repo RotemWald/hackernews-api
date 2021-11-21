@@ -20,7 +20,7 @@ public class PostController {
     private TokenService tokenService;
 
     @GetMapping
-    public ResponseEntity<Iterable<Post>> getAll(@RequestParam(name = "orderBy", required = false, defaultValue = "DEFAULT") Ordering order) {
+    public ResponseEntity<Iterable<Post>> getAll(@RequestParam(required = false, defaultValue = "DEFAULT") Ordering order) {
         Iterable posts;
         if (order == Ordering.BY_VOTES) {
             posts = postService.getAllSortedByMostVotes();
