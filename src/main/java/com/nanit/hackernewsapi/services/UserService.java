@@ -5,9 +5,11 @@ import com.nanit.hackernewsapi.dto.LoginResponse;
 import com.nanit.hackernewsapi.entities.Token;
 import com.nanit.hackernewsapi.entities.User;
 import com.nanit.hackernewsapi.exceptions.EntityNotFoundException;
+import com.nanit.hackernewsapi.exceptions.UnauthorizedException;
 import com.nanit.hackernewsapi.repositories.TokenRepository;
 import com.nanit.hackernewsapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,8 +22,11 @@ public class UserService {
     @Autowired
     private TokenRepository tokenRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public User create(User user) {
-        user.setPassword(user.getPassword() + "1234");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
         savedUser.setPassword("");
         return savedUser;
@@ -29,14 +34,13 @@ public class UserService {
 
     public LoginResponse login(LoginRequest request) {
         User user = getByUsername(request.getUsername());
-        String encryptedPassword = request.getPassword() + "1234";
-        if (user.getPassword().equals(encryptedPassword)) {
+        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             Token token = new Token();
             token.setUserId(user.getId());
             tokenRepository.save(token);
             return new LoginResponse(token.getToken());
         } else {
-            throw new RuntimeException("Unauthorized");
+            throw new UnauthorizedException("bad credentials");
         }
     }
 

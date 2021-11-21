@@ -22,6 +22,7 @@ public class PostService {
     }
 
     public Post create(Post post) {
+        post.setVotes(0);
         return repository.save(post);
     }
 
