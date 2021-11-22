@@ -22,11 +22,17 @@ public class PostController {
     @GetMapping
     public ResponseEntity<Iterable<Post>> getAll(@RequestParam(required = false, defaultValue = "DEFAULT") Ordering order) {
         Iterable posts;
-        if (order == Ordering.BY_VOTES) {
-            posts = postService.getAllSortedByMostVotes();
-        } else {
-            posts = postService.getAll();
+        switch (order) {
+            case BY_VOTES:
+                posts = postService.getAllSortedByVotes();
+                break;
+            case BY_SCORE:
+                posts = postService.getAllSortedByScore();
+                break;
+            default:
+                posts = postService.getAll();
         }
+
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 

@@ -25,4 +25,7 @@ public class Post {
 
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @Transient
+    private Double score;
 }
