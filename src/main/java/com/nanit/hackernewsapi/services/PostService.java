@@ -25,28 +25,12 @@ public class PostService {
     }
 
     public Iterable<Post> getAllSortedByScore() {
-        Iterable<Post> rawPosts = repository.findAll();
-        List<Post> posts = new ArrayList<>();
-
-        for (Post post : rawPosts) {
-            long age = ChronoUnit.HOURS.between(post.getCreatedAt(), LocalDateTime.now());
-            post.setScore((post.getVotes() - 1) / Math.pow(age + 2, 1.8));
-            posts.add(post);
-        }
-
-        Collections.sort(posts, (p1, p2) -> {
-            if (p2.getScore() > p1.getScore())
-                return 1;
-            if (p1.getScore() > p2.getScore())
-                return -1;
-            return 0;
-        });
-
-        return posts;
+        return repository.findAllByOrderByScoreDesc();
     }
 
     public Post create(Post post, Token token) {
         post.setVotes(0);
+        post.setScore(0.0);
         post.setUserId(token.getUserId());
         return repository.save(post);
     }

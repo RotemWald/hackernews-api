@@ -21,11 +21,10 @@ public class Post {
 
     private Integer votes;
 
+    private Double score;
+
     private Integer userId;
 
     @CreatedDate
     private LocalDateTime createdAt;
-
-    @Transient
-    private Double score;
 }
