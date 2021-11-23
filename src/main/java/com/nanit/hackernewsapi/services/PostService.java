@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PostService {
@@ -31,6 +33,16 @@ public class PostService {
     public Iterable<Post> getAllSortedByScore() {
         Optional<Posts> cachedPosts = cacheRepository.findById("all");
         if (cachedPosts.isPresent()) {
+            Posts posts = cachedPosts.get();
+            long ageInMinutes = ChronoUnit.MINUTES.between(posts.getLastUpdated(), LocalDateTime.now());
+            if (ageInMinutes >= 1) {
+                CompletableFuture.runAsync(() -> {
+                    Iterable<Post> dbPosts = dbRepository.findAllByOrderByScoreDesc();
+                    posts.setPosts(dbPosts);
+                    posts.setLastUpdated(LocalDateTime.now());
+                    cacheRepository.save(posts);
+                });
+            }
             return cachedPosts.get().getPosts();
         } else {
             Iterable<Post> dbPosts = dbRepository.findAllByOrderByScoreDesc();

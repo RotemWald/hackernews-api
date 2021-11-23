@@ -30,4 +30,9 @@ public class Posts {
 
         posts.forEach(post -> this.posts.add(post));
     }
+
+    public void setPosts(Iterable<Post> posts) {
+        this.posts.clear();
+        posts.forEach(post -> this.posts.add(post));
+    }
 }
