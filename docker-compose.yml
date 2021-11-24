@@ -34,7 +34,8 @@ services:
         "spring.datasource.password" : "$MYSQLDB_ROOT_PASSWORD",
         "spring.datasource.driver-class-name" : "com.mysql.cj.jdbc.Driver",
         "spring.jpa.hibernate.ddl-auto" : "update",
-        "spring.jpa.show-sql" : "true"
+        "spring.jpa.show-sql" : "true",
+        "caching.min-age-in-minutes" : "1"
       }'
     volumes:
       - .m2:/root/.m2

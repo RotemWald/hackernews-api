@@ -7,6 +7,7 @@ import com.nanit.hackernewsapi.exceptions.EntityNotFoundException;
 import com.nanit.hackernewsapi.repositories.PostRepository;
 import com.nanit.hackernewsapi.repositories.redis.PostsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,9 @@ public class PostService {
     @Autowired
     private PostsRepository cacheRepository;
 
+    @Value("${caching.min-age-in-minutes}")
+    private Integer minCachingAge;
+
     public Iterable<Post> getAll() {
         return dbRepository.findAll();
     }
@@ -35,7 +39,7 @@ public class PostService {
         if (cachedPosts.isPresent()) {
             Posts posts = cachedPosts.get();
             long ageInMinutes = ChronoUnit.MINUTES.between(posts.getLastUpdated(), LocalDateTime.now());
-            if (ageInMinutes >= 1) {
+            if (ageInMinutes >= this.minCachingAge) {
                 CompletableFuture.runAsync(() -> {
                     Iterable<Post> dbPosts = dbRepository.findAllByOrderByScoreDesc();
                     posts.setPosts(dbPosts);
