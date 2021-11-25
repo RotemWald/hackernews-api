@@ -25,9 +25,9 @@ public class Posts {
 
     public Posts(String id, Iterable<Post> posts, LocalDateTime lastUpdated) {
         this.id = id;
-        this.posts = new ArrayList<>();
         this.lastUpdated = lastUpdated;
 
+        this.posts = new ArrayList<>();
         posts.forEach(post -> this.posts.add(post));
     }
 
